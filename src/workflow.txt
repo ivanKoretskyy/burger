@@ -1,0 +1,4 @@
+1.create conmponets and containers folders
+2.create layout folder and component
+2.create functional component with div and main area
+2.2 in main add props.children
