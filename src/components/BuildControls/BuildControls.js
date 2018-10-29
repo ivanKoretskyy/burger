@@ -17,7 +17,9 @@ const buildControls = props => {
           type={el.type}
           label={el.label}
           key={el.type}
+          disabled={props.ingridients[el.type] < 1}
           addIngridient={() => props.addIngridient(el.type)}
+          removeIngridient={() => props.removeIngridient(el.type)}
         />
       ))}
     </div>
