@@ -1,12 +1,13 @@
 import React from "react";
 import BurgerBuilder from "../../containers/BurgerBuilder/BurgerBuilder";
 import classes from "./Layout.module.scss";
+import Toolbar from "../navigation/Toolbar/Toolbar";
 
 const layout = props => {
   return (
     <>
       <div className={classes.layout}>
-        <div className={classes.flex}>Toolbar SideDrawer Backdrop</div>
+        <Toolbar />
         <main className={classes.main}>
           <BurgerBuilder />
         </main>
