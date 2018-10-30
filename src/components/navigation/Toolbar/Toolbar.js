@@ -6,9 +6,15 @@ import NavigationList from "./../NavigationList/NavigationList";
 const toolbar = props => {
   return (
     <header className={classes.Header}>
-      <div>Menu</div>
+      <div onClick={props.showMenu} className={classes.DrawerToggle}>
+        <div />
+        <div />
+        <div />
+      </div>
       <Logo />
-      <NavigationList />
+      <nav className={classes.DesctopOnly}>
+        <NavigationList />
+      </nav>
     </header>
   );
 };

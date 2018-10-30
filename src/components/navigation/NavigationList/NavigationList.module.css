@@ -4,5 +4,12 @@
   list-style: none;
   height: 100%;
   display: flex;
+  flex-flow: column;
   align-items: center;
+}
+
+@media (min-width: 500px) {
+  .NavigationList {
+    flex-flow: row;
+  }
 }
