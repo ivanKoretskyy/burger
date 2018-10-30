@@ -10,11 +10,29 @@
   top: 30%;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
+  display: flex;
+  justify-content: space-between;
 }
 
 @media (min-width: 600px) {
   .Modal {
     width: 500px;
     left: calc(50% - 250px);
+  }
+}
+
+.ErrorHandler {
+  right: 10px;
+  top: 60px;
+  width: 300px;
+  background-color: tomato;
+  color: white;
+  left: auto;
+}
+@media (min-width: 600px) {
+  .ErrorHandler {
+    width: 300px;
+    right: 10px;
+    left: auto;
   }
 }
