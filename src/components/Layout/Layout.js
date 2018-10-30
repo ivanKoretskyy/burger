@@ -6,7 +6,7 @@ import SideDrawer from "../navigation/SideDrawer/SideDrawer";
 
 class Layout extends Component {
   state = {
-    showDrawer: true
+    showDrawer: false
   };
   closeSideDrawerHandler = () => {
     this.setState({ showDrawer: false });
