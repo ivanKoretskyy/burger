@@ -30,7 +30,7 @@ class BurgerBuilder extends Component {
     loading: false
   };
   componentDidMount() {
-    axios.get("https://burger-ca771.firebaseio.com/ingridients.jso").then(
+    axios.get("https://burger-ca771.firebaseio.com/ingridients.json").then(
       res => {
         this.setState({ ingridients: res.data });
       },
@@ -78,26 +78,30 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   continuePurchaseHandler = () => {
-    this.setState({ loading: true });
-    const data = {
-      ingridients: this.state.ingridients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Ivan Koretskyy"
-      },
-      address: {
-        street: "testStreet",
-        phone: "eewe332r"
-      }
-    };
-    axiosOrder.post("/orders.json", data).then(
-      res => {
-        this.setState({ loading: false, purchasing: false });
-      },
-      err => {
-        this.setState({ loading: false, purchasing: false });
-      }
-    );
+
+    this.props.history.push('/checkout');
+
+    // this.setState({ loading: true });
+    // const data = {
+    //   ingridients: this.state.ingridients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: "Ivan Koretskyy"
+    //   },
+    //   address: {
+    //     street: "testStreet",
+    //     phone: "eewe332r"
+    //   }
+    // };
+    // axiosOrder.post("/orders.json", data).then(
+    //   res => {
+        
+    //     this.setState({ loading: false, purchasing: false });
+    //   },
+    //   err => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   }
+    // );
   };
 
   render() {

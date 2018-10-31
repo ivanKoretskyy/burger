@@ -3,6 +3,8 @@ import BurgerBuilder from "../../containers/BurgerBuilder/BurgerBuilder";
 import classes from "./Layout.module.scss";
 import Toolbar from "../navigation/Toolbar/Toolbar";
 import SideDrawer from "../navigation/SideDrawer/SideDrawer";
+import Checkout from "../../containers/Checkout/Checkout";
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 class Layout extends Component {
   state = {
@@ -24,8 +26,13 @@ class Layout extends Component {
             closeDrawer={this.closeSideDrawerHandler}
           />
           <main className={classes.main}>
-            <BurgerBuilder />
+          <Switch>
+            <Route path='/burger' component={BurgerBuilder} />
+            <Route path='/checkout' component={Checkout} />
+            <Redirect from='/' to="/burger"></Redirect>
+          </Switch>
           </main>
+          
         </div>
       </>
     );
