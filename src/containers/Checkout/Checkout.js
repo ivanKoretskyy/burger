@@ -10,10 +10,20 @@ class Checkout extends Component {
       salad: 0
     },
   }
+  cancelHandler =() => {
+    this.props.history.goBack()
+  }
+  continueHandler = () => {
+    this.props.history.replace('/checkout/form')
+  }
   render() {
+    const ingridients = this.props.history.location.state;
     return (
        <div>
-         <CheckoutSummary ingridients={this.state.ingridients} />
+         <CheckoutSummary
+          ingridients={ingridients}
+          cancel={this.cancelHandler}
+          continue={this.continueHandler}/>
        </div>
     );
   }
