@@ -2,6 +2,8 @@ import React from 'react';
 import Burger from './../../Burger/Burger';
 import classes from './CheckoutSummary.module.css';
 import Button from './../../UI/Button/Button';
+import { Route } from 'react-router-dom';
+import ContactData from '../../../containers/Checkout/ContactData/ContactData';
 
 const checkoutSummary = (props) => {
   return (
@@ -10,6 +12,7 @@ const checkoutSummary = (props) => {
       <Burger ingridients={props.ingridients}/>
       <Button btnType="Danger" clicked={props.cancel}>Cancel</Button>
       <Button btnType="Success" clicked={props.continue}>Continue</Button>
+     
     </div>
   );
 }

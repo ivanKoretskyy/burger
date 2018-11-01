@@ -32,7 +32,9 @@ class BurgerBuilder extends Component {
   componentDidMount() {
     axios.get("https://burger-ca771.firebaseio.com/ingridients.json").then(
       res => {
+        console.log('set state builder')
         this.setState({ ingridients: res.data });
+        console.log('set state builder end')
       },
       err => console.error(err)
     );
@@ -79,29 +81,9 @@ class BurgerBuilder extends Component {
   };
   continuePurchaseHandler = () => {
 
-    this.props.history.push({pathname: '/checkout',state:  this.state.ingridients});
+    this.props.history.push({pathname: '/checkout',state:  this.state});
 
-    // this.setState({ loading: true });
-    // const data = {
-    //   ingridients: this.state.ingridients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: "Ivan Koretskyy"
-    //   },
-    //   address: {
-    //     street: "testStreet",
-    //     phone: "eewe332r"
-    //   }
-    // };
-    // axiosOrder.post("/orders.json", data).then(
-    //   res => {
-        
-    //     this.setState({ loading: false, purchasing: false });
-    //   },
-    //   err => {
-    //     this.setState({ loading: false, purchasing: false });
-    //   }
-    // );
+  
   };
 
   render() {

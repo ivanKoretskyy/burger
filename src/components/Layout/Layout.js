@@ -5,6 +5,7 @@ import Toolbar from "../navigation/Toolbar/Toolbar";
 import SideDrawer from "../navigation/SideDrawer/SideDrawer";
 import Checkout from "../../containers/Checkout/Checkout";
 import { Route, Switch, Redirect } from 'react-router-dom';
+import Orders from "../../containers/Orders/Orders";
 
 class Layout extends Component {
   state = {
@@ -29,6 +30,7 @@ class Layout extends Component {
           <Switch>
             <Route path='/burger' component={BurgerBuilder} />
             <Route path='/checkout' component={Checkout} />
+            <Route path='/orders' component={Orders} />
             <Redirect from='/' to="/burger"></Redirect>
           </Switch>
           </main>
