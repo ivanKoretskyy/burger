@@ -22,3 +22,6 @@
   outline: none;
   background-color: skyblue;
 }
+.Invalid {
+  border: 1px solid red;
+}

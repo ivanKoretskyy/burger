@@ -25,3 +25,6 @@
 .Danger {
   color: #944317;
 }
+.Disabled {
+  background-color: grey;
+}

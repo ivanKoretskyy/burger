@@ -16,7 +16,14 @@ class ContactData extends Component {
           placeholder: 'Name',
          
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+          maxLength: 5
+        },
+        valid: false,
+        touched: false
       },
       email:{
         elementType: 'input',
@@ -24,7 +31,12 @@ class ContactData extends Component {
           type: 'email',
           placeholder: 'your e-mail',
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
       },
    
         street: {
@@ -33,7 +45,12 @@ class ContactData extends Component {
             type: 'text',
             placeholder: 'streetAddress',
           },
-          value: ''
+          value: '',
+          validation: {
+            required: true
+          },
+          valid: false,
+          touched: false
         },
         deliveryMethod: {
           elementType: 'select',
@@ -43,10 +60,35 @@ class ContactData extends Component {
              {value: 'cheapest', displayValue: 'Cheapest'},
            ]
           },
-          value: 'fastest'
-        },      
+          value: 'fastest',
+          validation: {
+            required: true
+          },
+          valid: false,
+          touched: false
+        }
+         
     },
+    formIsValid: false,
     loading: false
+  }
+
+  checkValidity(value, rules) {
+    let isValid = true;
+
+    if (rules.required) {
+      isValid = value.trim() !== '';
+    }
+
+    if (rules.minLength && value.length < rules.minLength) {
+      isValid = false;
+    }
+
+    if (rules.maxLength && value.length > rules.maxLength) {
+      isValid = false;
+    }
+
+    return isValid;
   }
   orderHandler = (event) => {
     event.preventDefault();
@@ -87,7 +129,12 @@ class ContactData extends Component {
     const updatedElement = {...orderForm[element]};
     orderForm[element] = updatedElement;
     updatedElement.value = event.target.value;
-    this.setState({orderForm})
+    updatedElement.touched = true;
+    updatedElement.valid = this.checkValidity(event.target.value, updatedElement.validation);
+    console.log(updatedElement);
+
+    const formIsValid = Object.keys(orderForm).map(el => orderForm[el].valid).every(el => !!el);
+    this.setState({orderForm, formIsValid})
   }
   render() {
 
@@ -105,6 +152,7 @@ class ContactData extends Component {
           elementConfig={el.config.elementConfig}
           value={el.config.value}
           label={el.config.elementConfig.placeholder}
+          inValid={el.config.touched && !el.config.valid}
           propsChange={(event)=>this.propsChangeHandler(event,el.id )}/>
       );
     })
@@ -113,7 +161,7 @@ class ContactData extends Component {
       <form onSubmit={this.orderHandler}>
      {inputs}
      
-      <Button inputtype="button" btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+      <Button inputtype="button" btnType="Success" disabled={!this.state.formIsValid} clicked={this.orderHandler}>ORDER</Button>
     </form>
     );
     if (this.state.loading) {
