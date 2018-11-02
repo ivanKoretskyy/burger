@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CheckoutSummary from './../../components/Order/CheckoutSummary/CheckoutSummary';
 import { Route, withRouter } from 'react-router-dom'; 
 import ContactData from './ContactData/ContactData';
+import { connect } from 'react-redux';
 
 class Checkout extends Component {
   state = {
@@ -17,19 +18,19 @@ class Checkout extends Component {
     this.props.history.goBack()
   }
   componentDidMount () {
-    if( this.props.history.location.state) {
-      const state = this.props.history.location.state
-      console.log('----')
-      this.setState({ingridients: state.ingridients, totalPrice: state.totalPrice})
-      console.log('++++')
-    }
+    // if( this.props.history.location.state) {
+    //   const state = this.props.history.location.state
+    //   console.log('----')
+    //   this.setState({ingridients: state.ingridients, totalPrice: state.totalPrice})
+    //   console.log('++++')
+    // }
   }
   continueHandler = () => {
     this.props.history.push('/checkout/contact-data')
   }
   render() {
-    const ingridients ={...this.state.ingridients}
-    const price = this.state.totalPrice
+    const ingridients ={...this.props.ingridients}
+    const price = this.props.totalPrice
     return (
        <div>
          <CheckoutSummary
@@ -50,4 +51,11 @@ class Checkout extends Component {
 
 } 
 
-export default Checkout;
+const mapPropsToState = (state) => {
+  return {
+    ingridients: state.ingridients,
+    totalPrice: state.totalPrice
+  }
+}
+
+export default connect(mapPropsToState)(Checkout);

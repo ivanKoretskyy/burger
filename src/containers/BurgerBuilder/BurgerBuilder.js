@@ -8,6 +8,7 @@ import axiosOrder from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
 import axios from "axios";
+import { connect } from 'react-redux';
 
 const INGRIDIENT_PRICE = {
   cheese: 2,
@@ -52,25 +53,30 @@ class BurgerBuilder extends Component {
   };
 
   addHandler = type => {
-    const amount = this.state.ingridients[type] + 1;
+    const amount = this.props.ingridients[type] + 1;
     const ingridients = {
-      ...this.state.ingridients,
+      ...this.props.ingridients,
       [type]: amount
     };
-    const totalPrice = this.state.totalPrice + INGRIDIENT_PRICE[type];
-    this.setState({ ingridients, totalPrice });
+    const totalPrice = this.props.totalPrice + INGRIDIENT_PRICE[type];
+    //this.setState({ ingridients, totalPrice });
     this.updatePurchasable(ingridients);
+    this.props.onChangeIngridients(ingridients);
+    this.props.onChangeTotalPrice(totalPrice);
   };
+
   removeHandler = type => {
-    const amount = this.state.ingridients[type] - 1;
+    const amount = this.props.ingridients[type] - 1;
     if (amount < 0) return;
     const ingridients = {
-      ...this.state.ingridients,
+      ...this.props.ingridients,
       [type]: amount
     };
-    const totalPrice = this.state.totalPrice - INGRIDIENT_PRICE[type];
+    const totalPrice = this.props.totalPrice - INGRIDIENT_PRICE[type];
     this.setState({ ingridients, totalPrice });
     this.updatePurchasable(ingridients);
+    this.props.onChangeIngridients(ingridients);
+    this.props.onChangeTotalPrice(totalPrice);
   };
 
   purchaseHandler = () => {
@@ -80,8 +86,9 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   continuePurchaseHandler = () => {
-
-    this.props.history.push({pathname: '/checkout',state:  this.state});
+    const ingridients = {...this.props.ingridients};
+    const totalPrice = {...this.props.totalPrice};
+    this.props.history.push({pathname: '/checkout',state:  {...this.state, ingridients, totalPrice}});
 
   
   };
@@ -89,10 +96,10 @@ class BurgerBuilder extends Component {
   render() {
     let orderSummary = (
       <OrderSummary
-        ingridients={this.state.ingridients}
+        ingridients={this.props.ingridients}
         cancelClicked={this.cancelPurchaseHandler}
         submintClicked={this.continuePurchaseHandler}
-        price={this.state.totalPrice}
+        price={this.props.totalPrice}
       />
     );
     if (this.state.loading) {
@@ -107,14 +114,14 @@ class BurgerBuilder extends Component {
           {orderSummary}
         </Modal>
         <Burger
-          ingridients={this.state.ingridients}
+          ingridients={this.props.ingridients}
           cancel={this.cancelPurchaseHandler}
         />
         <BuildControls
           addIngridient={this.addHandler}
           removeIngridient={this.removeHandler}
-          ingridients={this.state.ingridients}
-          totalPrice={this.state.totalPrice}
+          ingridients={this.props.ingridients}
+          totalPrice={this.props.totalPrice || 112}
           isPurchasable={this.state.isPurchasable}
           order={this.purchaseHandler}
         />
@@ -122,4 +129,17 @@ class BurgerBuilder extends Component {
     );
   }
 }
-export default withErrorHandler(BurgerBuilder, axiosOrder);
+const mapStateToProps = state => {
+  return {
+    ingridients: state.ingridients,
+    totalPrice: state.totalPrice
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    onChangeIngridients: (ingridients) => dispatch({type: 'CHANGE_INGRIDIENTS', payload: ingridients}),
+    onChangeTotalPrice: (totalPrice) => dispatch({type: 'CHANGE_TOTAL_PRICE', payload: totalPrice})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BurgerBuilder);
