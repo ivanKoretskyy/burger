@@ -1,3 +1,5 @@
+import * as actionType from '../actions/actionType';
+
 const initialState = {
   totalPrice: 5,
   ingridients: {
@@ -9,10 +11,10 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-  if (action.type === 'CHANGE_INGRIDIENTS') {
+  if (action.type === actionType.CHANGE_INGRIDIENTS) {
     return { ...state, ingridients: action.payload };
   }
-  if (action.type === 'CHANGE_TOTAL_PRICE') {
+  if (action.type === actionType.CHANGE_TOTAL_PRICE) {
     return { ...state, totalPrice: action.payload };
   }
   return { ...state };

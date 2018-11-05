@@ -9,6 +9,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../hoc/withErrorHandler/withErrorHandler";
 import axios from "axios";
 import { connect } from 'react-redux';
+import { changeIngridients, changeprice } from '../../store/actions'
 
 const INGRIDIENT_PRICE = {
   cheese: 2,
@@ -86,11 +87,11 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: false });
   };
   continuePurchaseHandler = () => {
-    const ingridients = {...this.props.ingridients};
-    const totalPrice = {...this.props.totalPrice};
-    this.props.history.push({pathname: '/checkout',state:  {...this.state, ingridients, totalPrice}});
+    const ingridients = { ...this.props.ingridients };
+    const totalPrice = { ...this.props.totalPrice };
+    this.props.history.push({ pathname: '/checkout', state: { ...this.state, ingridients, totalPrice } });
 
-  
+
   };
 
   render() {
@@ -137,8 +138,8 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    onChangeIngridients: (ingridients) => dispatch({type: 'CHANGE_INGRIDIENTS', payload: ingridients}),
-    onChangeTotalPrice: (totalPrice) => dispatch({type: 'CHANGE_TOTAL_PRICE', payload: totalPrice})
+    onChangeIngridients: (ingridients) => dispatch(changeIngridients(ingridients)),
+    onChangeTotalPrice: (totalPrice) => dispatch(changeprice(totalPrice))
   }
 }
 
