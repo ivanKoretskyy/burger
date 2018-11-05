@@ -4,6 +4,8 @@ import Button from '../../../components/UI/Button/Button';
 import axiosOrder from '../../../axios-orders';
 import Spiner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import { submitOrder } from '../../../store/actions/order';
+import { connect } from 'react-redux';
 
 class ContactData extends Component {
   alive;
@@ -14,7 +16,7 @@ class ContactData extends Component {
         elementConfig: {
           type: 'text',
           placeholder: 'Name',
-         
+
         },
         value: '',
         validation: {
@@ -25,7 +27,7 @@ class ContactData extends Component {
         valid: false,
         touched: false
       },
-      email:{
+      email: {
         elementType: 'input',
         elementConfig: {
           type: 'email',
@@ -38,39 +40,38 @@ class ContactData extends Component {
         valid: false,
         touched: false
       },
-   
-        street: {
-          elementType: 'input',
-          elementConfig: {
-            type: 'text',
-            placeholder: 'streetAddress',
-          },
-          value: '',
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
+
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'streetAddress',
         },
-        deliveryMethod: {
-          elementType: 'select',
-          elementConfig: {
-           options: [
-             {value: 'fastest', displayValue: 'Fastes'},
-             {value: 'cheapest', displayValue: 'Cheapest'},
-           ]
-          },
-          value: 'fastest',
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        }
-         
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
+      },
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            { value: 'fastest', displayValue: 'Fastes' },
+            { value: 'cheapest', displayValue: 'Cheapest' },
+          ]
+        },
+        value: 'fastest',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
+      }
+
     },
-    formIsValid: false,
-    loading: false
+    formIsValid: false
   }
 
   checkValidity(value, rules) {
@@ -93,12 +94,12 @@ class ContactData extends Component {
   orderHandler = (event) => {
     event.preventDefault();
 
-   // this.setState({ loading: true });
-   const orderForm = {...this.state.orderForm};
-   const contact = {};
-   for(let el in orderForm) {
-     contact[el] = orderForm[el].value
-   }
+    // this.setState({ loading: true });
+    const orderForm = { ...this.state.orderForm };
+    const contact = {};
+    for (let el in orderForm) {
+      contact[el] = orderForm[el].value
+    }
 
     const data = {
       ingridients: this.props.ingridients,
@@ -106,27 +107,28 @@ class ContactData extends Component {
       customer: contact
     };
     console.log(this.alive);
-    axiosOrder.post("/orders.json", data).then(
-      res => {
-        console.log(this.alive)
-        this.setState({ loading: false });
-        this.props.history.push('/burger');
-      },
-      err => {
-        this.setState({ loading: false});
-      }
-    );
+    this.props.onSubmitForm(data);
+    // axiosOrder.post("/orders.json", data).then(
+    //   res => {
+    //     console.log(this.alive)
+    //     this.setState({ loading: false });
+    //     this.props.history.push('/burger');
+    //   },
+    //   err => {
+    //     this.setState({ loading: false });
+    //   }
+    // );
   }
   componentDidMount() {
-    this.alive= true
+    this.alive = true
   }
   componentWillUnmount() {
     console.log('willUnmount Contact data');
     this.alive = false
   }
   propsChangeHandler(event, element) {
-    const orderForm = {...this.state.orderForm};
-    const updatedElement = {...orderForm[element]};
+    const orderForm = { ...this.state.orderForm };
+    const updatedElement = { ...orderForm[element] };
     orderForm[element] = updatedElement;
     updatedElement.value = event.target.value;
     updatedElement.touched = true;
@@ -134,7 +136,7 @@ class ContactData extends Component {
     console.log(updatedElement);
 
     const formIsValid = Object.keys(orderForm).map(el => orderForm[el].valid).every(el => !!el);
-    this.setState({orderForm, formIsValid})
+    this.setState({ orderForm, formIsValid })
   }
   render() {
 
@@ -153,27 +155,37 @@ class ContactData extends Component {
           value={el.config.value}
           label={el.config.elementConfig.placeholder}
           inValid={el.config.touched && !el.config.valid}
-          propsChange={(event)=>this.propsChangeHandler(event,el.id )}/>
+          propsChange={(event) => this.propsChangeHandler(event, el.id)} />
       );
     })
 
     let form = (
       <form onSubmit={this.orderHandler}>
-     {inputs}
-     
-      <Button inputtype="button" btnType="Success" disabled={!this.state.formIsValid} clicked={this.orderHandler}>ORDER</Button>
-    </form>
+        {inputs}
+
+        <Button inputtype="button" btnType="Success" disabled={!this.state.formIsValid} clicked={this.orderHandler}>ORDER</Button>
+      </form>
     );
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spiner />
     }
     return (
       <div className={classes.ContactData}>
         <h4>Enter your Contact Data</h4>
-       {form}
+        {form}
       </div>
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    loading: state.order.loading
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmitForm: (orderData) => dispatch(submitOrder(orderData))
+  }
+}
 
-export default ContactData;
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
