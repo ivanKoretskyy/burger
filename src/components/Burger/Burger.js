@@ -3,7 +3,8 @@ import BurgerIngridient from "./BurgerIngridient/BurgerIngridient";
 import classes from "./Burger.module.css";
 
 const burger = props => {
-  const keys = Object.keys(props.ingridients);
+  const ings = props.ingridients || {salad:0, meat:0, bacon:0, chease:0};
+  const keys = Object.keys(ings);
   let  ingridients = keys.flatMap((el, i) => {
     return [...Array(props.ingridients[el])].map((_, i) => {
       return <BurgerIngridient key={el + i} type={el} />;

@@ -3,7 +3,7 @@ import classes from "./NavigationList.module.css";
 import NavigationItem from "../NavigationItem/NavigationItem";
 import { NavLink } from 'react-router-dom'
 
-const navigationList = () => {
+const navigationList = (props) => {
   return (
     <ul className={classes.NavigationList}>
       
@@ -14,7 +14,13 @@ const navigationList = () => {
       
      
         <NavigationItem link="/checkout">Checkout</NavigationItem>
-        <NavigationItem link="/orders">Orders</NavigationItem>
+        {props.isAuthenticated 
+          ? <NavigationItem link="/orders">Orders</NavigationItem>
+        : null}
+        {!props.isAuthenticated
+          ? <NavigationItem link='/auth'>Login</NavigationItem>
+          : <NavigationItem link='/logout'>Logout</NavigationItem>
+        }
       
     </ul>
   );

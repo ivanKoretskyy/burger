@@ -18,7 +18,7 @@ const INGRIDIENT_PRICE = {
   bacon: 2
 };
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   state = {
     ingridients: {
       meat: 0,
@@ -132,8 +132,8 @@ class BurgerBuilder extends Component {
 }
 const mapStateToProps = state => {
   return {
-    ingridients: state.ingridients,
-    totalPrice: state.totalPrice
+    ingridients: state.burger.ingridients,
+    totalPrice: state.burger.totalPrice
   }
 }
 const mapDispatchToProps = dispatch => {
